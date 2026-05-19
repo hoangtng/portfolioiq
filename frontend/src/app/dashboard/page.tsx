@@ -66,7 +66,6 @@ function Dashboard() {
         const recent = alertsRes.results.filter(
           (a) => !a.is_active && a.triggered_at && new Date(a.triggered_at).getTime() > cutoff,
         );
-        console.log("[alerts] total:", alertsRes.results.length, "recent:", recent.length);
         setRecentAlerts(recent);
       } catch (e) {
         console.error("Failed to load alerts:", e);

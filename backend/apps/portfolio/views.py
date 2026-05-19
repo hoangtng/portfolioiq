@@ -23,7 +23,7 @@ from .serializers import (
     WatchlistSerializer,
 )
 from .services.cache import QuoteCache
-from .services.massive import MassiveClient
+from .services.market import MassiveClient
 from .services.portfolio import PortfolioService
 
 logger = logging.getLogger(__name__)

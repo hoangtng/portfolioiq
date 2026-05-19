@@ -6,6 +6,8 @@ import {
   LayoutDashboard, TrendingUp, Eye, Bell, Layers,
   NotebookPen, Sparkles, PieChart, Settings, LogOut,
 } from "lucide-react";
+import  imageLogo  from "@/static/images/icon.svg"
+import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth-context";
@@ -54,7 +56,7 @@ export function Sidebar() {
       <div className="px-4 pt-6 pb-8">
         <Link href="/dashboard" className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-lg bg-accent-gradient flex items-center justify-center font-bold text-bg-deepest text-base shadow-glow">
-            P
+            <Image src={imageLogo} alt="PortfolioIQ" width={36} height={36} className="rounded-lg" />
           </div>
           <div className="font-mono font-bold text-sm tracking-wider">PORTFOLIOIQ</div>
         </Link>

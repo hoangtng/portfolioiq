@@ -49,7 +49,7 @@ The backend is a Django REST API with PostgreSQL, a Redis quote cache refreshed 
 
 ## Architecture
 
-[![PortfolioIQ system architecture](./portfolioiq_full_architecture.svg)](./portfolioiq_full_architecture.svg)
+[![PortfolioIQ system architecture](./architecture.svg)](./architecture.svg)
 
 The system runs as **six containerized services** orchestrated by Docker Compose:
 

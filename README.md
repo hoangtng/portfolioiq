@@ -33,6 +33,14 @@ The backend is a Django REST API with PostgreSQL, a Redis quote cache refreshed 
 
 ---
 
+---
+<div align="center">
+
+<video src="./demo.mp4" autoplay loop muted playsinline width="800"></video>
+
+</div>
+---
+
 ## Highlights
 
 | | |

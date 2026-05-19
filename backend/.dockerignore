@@ -1,0 +1,50 @@
+# Git
+.git
+.gitignore
+.dockerignore
+Dockerfile
+
+# Secrets — NEVER bake into image
+.env
+.env.*
+
+# Python
+*.pyc
+__pycache__
+*.pyo
+*.pyd
+.Python
+.venv
+venv
+env
+ENV
+*.egg-info
+.eggs
+.tox
+.coverage
+.coverage.*
+htmlcov
+.pytest_cache
+.mypy_cache
+.ruff_cache
+
+# Django
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+staticfiles
+media
+celerybeat-schedule
+celerybeat.pid
+
+# IDE / OS
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+
+# Docs / test artifacts
+*.md
+README*
+docs/
+tests/__snapshots__

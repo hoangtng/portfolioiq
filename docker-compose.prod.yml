@@ -1,0 +1,133 @@
+# PortfolioIQ — production backend stack.
+# Runs on AWS EC2 t3.medium. Frontend deployed separately on Vercel.
+#
+# Usage on the EC2:
+#   docker compose -f docker-compose.prod.yml up -d --build
+#   docker compose -f docker-compose.prod.yml logs -f api
+#   docker compose -f docker-compose.prod.yml exec api python manage.py migrate
+
+services:
+
+  # ─── Data layer ────────────────────────────────────────────────
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       ${POSTGRES_DB}
+      POSTGRES_USER:     ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:     ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout:  5s
+      retries:  5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test:     ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout:  5s
+      retries:  5
+
+  elasticsearch:
+    image: elasticsearch:8.13.0
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - bootstrap.memory_lock=true
+    ulimits:
+      memlock: { soft: -1, hard: -1 }
+      nofile:  { soft: 65536, hard: 65536 }
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test:     ["CMD-SHELL", "curl -fsS http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout:  10s
+      retries:  5
+
+  # ─── Application layer ─────────────────────────────────────────
+
+  api:
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
+    image:   portfolioiq-api:latest
+    restart: unless-stopped
+    env_file: .env.production
+    depends_on:
+      postgres:      { condition: service_healthy }
+      redis:         { condition: service_healthy }
+      elasticsearch: { condition: service_healthy }
+    volumes:
+      - static_files:/app/staticfiles
+      - media_files:/app/media
+    expose:
+      - "8000"
+    # Run migrations + collectstatic before starting gunicorn.
+    # New migrations apply automatically on every redeploy.
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py collectstatic --noinput &&
+             gunicorn core.wsgi:application
+             --bind 0.0.0.0:8000
+             --workers 3
+             --worker-class gthread
+             --threads 2
+             --timeout 60
+             --max-requests 1000
+             --max-requests-jitter 100
+             --access-logfile -
+             --error-logfile -"
+
+  worker:
+    image:   portfolioiq-api:latest
+    restart: unless-stopped
+    env_file: .env.production
+    depends_on:
+      postgres:      { condition: service_healthy }
+      redis:         { condition: service_healthy }
+      elasticsearch: { condition: service_healthy }
+      api:           { condition: service_started }
+    command: celery -A core worker --loglevel=info --concurrency=2
+
+  beat:
+    image:   portfolioiq-api:latest
+    restart: unless-stopped
+    env_file: .env.production
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis:    { condition: service_healthy }
+      api:      { condition: service_started }
+    command: celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+
+  # ─── Edge ──────────────────────────────────────────────────────
+
+  nginx:
+    image:   nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_files:/var/www/static:ro
+      - media_files:/var/www/media:ro
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  redis_data:
+  es_data:
+  static_files:
+  media_files:

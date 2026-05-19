@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-inter: Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-jetbrains: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+/* ─── Base reset ─────────────────────────────────────────── */
+
+html, body {
+  background: #060A0F;
+  color: #fff;
+  font-family: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Background gradient — subtle green tint at the top */
+body {
+  background-image:
+    radial-gradient(at 0% 0%, rgba(0, 255, 170, 0.03) 0%, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(0, 212, 255, 0.02) 0%, transparent 50%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(0, 255, 170, 0.3);
+  color: #fff;
+}
+
+/* ─── Scrollbars ────────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.08);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 170, 0.3);
+}
+
+/* ─── Layered component classes ─────────────────────────── */
+
+@layer components {
+
+  /* Cards */
+  .card {
+    @apply bg-bg-card border border-line rounded-2xl;
+  }
+  .card-hover {
+    @apply card transition-colors hover:border-line-strong;
+  }
+  .card-accent {
+    @apply card bg-accent-soft border-accent/30 shadow-glowSoft;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg font-medium
+           transition-all duration-150 active:scale-[0.98];
+  }
+  .btn-primary {
+    @apply btn bg-accent text-bg-deepest px-4 py-2.5 text-sm font-semibold
+           shadow-glow hover:shadow-glow hover:bg-accent-400;
+  }
+  .btn-secondary {
+    @apply btn bg-bg-hover text-ink border border-line-strong px-4 py-2.5 text-sm
+           hover:bg-bg-hover hover:border-accent/30;
+  }
+  .btn-ghost {
+    @apply btn text-ink-dim px-3 py-2 text-sm hover:bg-bg-hover hover:text-ink;
+  }
+  .btn-icon {
+    @apply w-9 h-9 rounded-lg border border-line bg-bg-card/50 flex items-center justify-center
+           text-ink-dim hover:text-ink hover:border-line-strong transition-colors;
+  }
+
+  /* Inputs */
+  .input {
+    @apply w-full bg-bg-deepest border border-line rounded-lg px-3.5 py-2.5
+           text-sm text-ink placeholder:text-ink-faint
+           focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20
+           transition-colors;
+  }
+  .input-mono {
+    @apply input font-mono tracking-tight;
+  }
+
+  /* Labels */
+  .label {
+    @apply text-xs font-mono uppercase tracking-wider text-ink-muted block mb-2;
+  }
+
+  /* Stat cards (summary) */
+  .stat-card {
+    @apply card p-4 sm:p-5 relative overflow-hidden;
+  }
+  .stat-label {
+    @apply flex items-center gap-1.5 text-[11px] font-mono uppercase
+           tracking-wider text-ink-muted mb-2;
+  }
+  .stat-value {
+    @apply text-2xl sm:text-[28px] font-mono font-medium tracking-tight leading-none;
+  }
+  .stat-delta {
+    @apply mt-2 inline-flex items-center gap-1 text-xs font-mono font-medium;
+  }
+
+  /* Pills / badges */
+  .pill {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px]
+           font-mono uppercase tracking-wider;
+  }
+  .pill-up   { @apply pill bg-up/10  text-up; }
+  .pill-down { @apply pill bg-down/10 text-down; }
+  .pill-cyan { @apply pill bg-cyan/10 text-cyan; }
+  .pill-warn { @apply pill bg-warn/10 text-warn; }
+  .pill-neutral { @apply pill bg-line text-ink-dim; }
+
+  /* Section headers */
+  .section-title {
+    @apply text-xs font-mono uppercase tracking-[0.12em] text-accent;
+  }
+
+  /* Loading skeleton */
+  .skeleton {
+    @apply bg-bg-hover rounded animate-pulse;
+  }
+
+  /* Mono lockup — for ticker chips */
+  .ticker-chip {
+    @apply font-mono font-semibold text-[11px] uppercase tracking-wider;
+  }
+
+  /* Glow text */
+  .glow-text {
+    text-shadow: 0 0 24px rgba(0, 255, 170, 0.5);
+  }
+
+  /* Terminal cursor */
+  .cursor-blink::after {
+    content: "_";
+    color: #00FFAA;
+    animation: blink 1.2s steps(2, start) infinite;
+    margin-left: 2px;
+  }
+  .blink-text::after {
+  content: "your portfolio";
+  color: #00FFAA;
+  animation: blink 1.2s steps(2, start) infinite;;
+  }
+  
+
+  .value-flash-up {
+    animation: flash-up 800ms ease-out;
+    border-radius: 4px;
+    padding: 0 4px;
+    margin: 0 -4px;
+  }
+
+  .value-flash-down {
+    animation: flash-down 800ms ease-out;
+    border-radius: 4px;
+    padding: 0 4px;
+    margin: 0 -4px;
+  }
+}
+
+/* ─── Animations ──────────────────────────────────────── */
+@keyframes flash-up {
+  0%   { background-color: rgba(0, 255, 170, 0.25); }
+  100% { background-color: transparent; }
+}
+
+@keyframes flash-down {
+  0%   { background-color: rgba(255, 51, 102, 0.25); }
+  100% { background-color: transparent; }
+}
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ─── Mobile safe-area for bottom nav ─────────────────── */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+/* ─── Prose (ReactMarkdown) overrides ─────────────────── */
+.prose-invert h1,
+.prose-invert h2,
+.prose-invert h3    { color: #fff; font-weight: 700; }
+.prose-invert h2    { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+.prose-invert h3    { font-size: 1.1rem;  margin-top: 1.25rem; }
+.prose-invert strong { color: #fff; }
+.prose-invert code  { background: rgba(0,255,170,0.1); color: #00FFAA; padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.875em; }
+.prose-invert pre   { background: #060A0F; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; }
+.prose-invert ul,
+.prose-invert ol    { color: rgba(255,255,255,0.65); }
+.prose-invert blockquote { border-left-color: #00FFAA; color: rgba(255,255,255,0.55); }
+
+/* AI analyst tab: accent headings */
+.prose-ai h1,
+.prose-ai h2,
+.prose-ai h3 { color: #00FFAA; }
+
+/* Search highlight marks */
+mark { background: rgba(0,255,170,0.25); color: inherit; border-radius: 2px; padding: 0 2px; }

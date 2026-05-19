@@ -1,0 +1,43 @@
+<svg width="480" height="96" viewBox="0 0 480 96" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PortfolioIQ">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F1419"/>
+      <stop offset="100%" stop-color="#080B10"/>
+    </linearGradient>
+    <linearGradient id="pStroke" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00FFAA"/>
+      <stop offset="100%" stop-color="#00D4FF"/>
+    </linearGradient>
+    <radialGradient id="dotGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00FFAA" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#00FFAA" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <g transform="translate(0,0) scale(0.1875)">
+    <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+    <rect width="512" height="512" rx="112" fill="none" stroke="rgba(0,255,170,0.08)" stroke-width="2"/>
+    <path
+      d="M 138 100 H 326 C 366 100, 398 132, 398 172 L 398 220 C 398 260, 366 292, 326 292 H 198 V 412 H 138 Z M 198 162 H 314 C 328 162, 340 174, 340 188 L 340 206 C 340 220, 328 232, 314 232 H 198 Z"
+      fill="url(#pStroke)"
+      fill-rule="evenodd"/>
+    <path
+      d="M 218 256 L 248 234 L 282 252 L 320 198"
+      stroke="#00FFAA"
+      stroke-width="14"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"/>
+    <circle cx="320" cy="198" r="32" fill="url(#dotGlow)"/>
+    <circle cx="320" cy="198" r="13" fill="#00FFAA"/>
+  </g>
+
+  <text
+    x="116"
+    y="60"
+    font-family="'JetBrains Mono', 'SF Mono', 'Menlo', monospace"
+    font-size="32"
+    font-weight="700"
+    letter-spacing="3"
+    fill="#E4E7EB">PORTFOLIOIQ</text>
+</svg>

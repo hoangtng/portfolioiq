@@ -16,7 +16,7 @@ Track positions in real time. Research options. Set price alerts. Ask Claude any
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com)
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 
-[**Live Demo**](https://www.portfolioiq.online/) · [**Documentation**](#api-reference) · [**Deploy to AWS**](./docs/DEPLOY-AWS.md) · [**Report a bug**](https://github.com/hoangtng/PortfolioIQ/issues)
+[**Live Demo**](https://www.portfolioiq.online/) · [**Documentation**](#api-reference) · [**Deploy to AWS**](./scripts/) · [**Report a bug**](https://github.com/hoangtng/PortfolioIQ/issues)
 
 </div>
 

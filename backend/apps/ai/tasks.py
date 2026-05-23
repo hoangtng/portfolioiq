@@ -142,17 +142,24 @@ def handle_telegram_message(chat_id: str, command: str, argument: str) -> dict:
         if user:
             telegram.send_message(
                 chat_id=chat_id,
-                text=f"You're already linked as *{user.display_name}*. Try /analyze or /help.",
+                text=f"You're all set, {user.display_name} 👋\n\nReady when you are — try /analyze for a portfolio check, or /help to see what I can do.",
             )
         else:
             telegram.send_message(
                 chat_id=chat_id,
                 text=(
-                    "Welcome to PortfolioIQ.\n\n"
-                    f"To link this Telegram account, set your `telegram_chat_id` "
-                    f"to `{chat_id}` in your profile:\n\n"
-                    "`PATCH /api/auth/me/ {\"telegram_chat_id\": \"" + str(chat_id) + "\"}`\n\n"
-                    "Then send /analyze to get started."
+                    f"Hey there 👋\n\n"
+                    f"I'm PortfolioIQ — an AI analyst that actually knows your portfolio. "
+                    f"Before we get started, I need to link this Telegram to your account.\n\n"
+                    f"Here's your chat ID: `{chat_id}`\n\n"
+                    f"Pop over to https://portfolioiq.online/settings, paste it into the "
+                    f"Telegram field, and hit save. Takes about 10 seconds.\n\n"
+                    f"Once you're linked, try:\n\n"
+                    f"📊 /analyze — Full portfolio breakdown\n"
+                    f"💬 /chat — Ask me anything about your book\n"
+                    f"📋 /positions — Quick snapshot of what you hold\n"
+                    f"❓ /help — See everything I can do\n\n"
+                    f"See you in a sec."
                 ),
             )
         return {"status": "ok", "command": "start"}
@@ -161,7 +168,7 @@ def handle_telegram_message(chat_id: str, command: str, argument: str) -> dict:
     if not user:
         telegram.send_message(
             chat_id=chat_id,
-            text="This Telegram account isn't linked. Send /start for instructions.",
+            text="Hey there 👋 This Telegram account isn't linked to a PortfolioIQ profile yet.\n\nSend /start and I'll walk you through it — takes about 10 seconds.",
         )
         return {"status": "unlinked"}
 
@@ -170,11 +177,13 @@ def handle_telegram_message(chat_id: str, command: str, argument: str) -> dict:
         telegram.send_message(
             chat_id=chat_id,
             text=(
-                "*PortfolioIQ commands*\n\n"
-                "/analyze — full portfolio analysis\n"
-                "/chat <question> — ask anything about your positions\n"
-                "/journal <ticker> <thesis> — generate a journal entry\n"
-                "/help — this message"
+                "*What I can do* 📊\n\n"
+                "📈 /analyze — Full portfolio analysis\n"
+                "💬 /chat — Ask anything about your book\n"
+                "📝 /journal — Generate journal entries\n"
+                "❓ /help — Show this menu\n\n"
+                "_Tip: /chat What's risky right now?_\n\n"
+                "🌐 portfolioiq.online"
             ),
         )
         return {"status": "ok", "command": "help"}

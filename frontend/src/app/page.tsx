@@ -29,8 +29,7 @@ export default function LandingPage() {
 
       <div className="relative z-10">
         <Nav            user={user} loading={loading} />
-        <Hero           user={user} loading={loading} />
-        <StatsStrip />
+        <Hero           user={user} loading={loading} />   
         <AISection />
         <ExampleQueries />
         <DemoPreview />
@@ -168,39 +167,11 @@ function Hero({ user, loading }: { user: unknown; loading: boolean }) {
     </section>
   );
 }
-
- //─── Stats strip ───────────────────────────────────────────────────
-
-function StatsStrip() {
-  const stats = [
-    { value: "12,000+", label: "AI analyses delivered" },
-    { value: "1,200+",  label: "active traders" },
-    { value: "$87M",    label: "positions tracked" },
-    { value: "99.9%",   label: "uptime" },
-  ];
-  return (
-    <section className="px-4 sm:px-6 lg:px-8 py-8 border-y border-line bg-bg-rail/30">
-      <div className="max-w-[1280px] mx-auto grid grid-cols-2 sm:grid-cols-4 gap-6">
-        {stats.map((s) => (
-          <div key={s.label} className="text-center">
-            <div className="font-mono font-bold text-2xl sm:text-3xl text-accent glow-text">
-              {s.value}
-            </div>
-            <div className="font-mono text-[11px] text-ink-faint uppercase tracking-wider mt-1">
-              {s.label}
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 // ─── AI section ────────────────────────────────────────────────────
 
 function AISection() {
   return (
-    <section id="ai" className="px-4 sm:px-6 lg:px-8 py-20 sm:py-24 relative">
+    <section id="ai" className="px-4 sm:px-6 lg:px-8 py-10 sm:py-10 relative">
       <div className="max-w-[1280px] mx-auto">
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -369,7 +340,7 @@ function DemoPreview() {
         <header className="mb-10 text-center">
           <div className="section-title mb-3"> Dashboard</div>
           <h2 className="font-mono font-bold text-3xl sm:text-4xl tracking-tight">
-            <span className="text-accent">{">"}</span> the AI lives where your portfolio does
+            <span className="text-accent">{">"}</span> The AI lives where your portfolio does
           </h2>
         </header>
 
@@ -527,7 +498,7 @@ function FeaturesGrid() {
         <header className="mb-12">
           <div className="section-title mb-3"> What else you get</div>
           <h2 className="font-mono font-bold text-3xl sm:text-4xl tracking-tight">
-            <span className="text-accent">{">"}</span> the AI is the headline. these make it sharper.
+            <span className="text-accent">{">"}</span> The AI is the headline. these make it sharper.
           </h2>
           <p className="mt-3 text-ink-dim max-w-2xl">
             Every feature feeds the AI better data. Better data, better answers.

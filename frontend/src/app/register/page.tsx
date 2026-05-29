@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2, UserPlus } from "lucide-react";
@@ -12,13 +12,44 @@ import Image from "next/image";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, loginGoogle } = useAuth();
 
   const [email,     setEmail]     = useState("");
   const [firstName, setFirstName] = useState("");
   const [password,  setPassword]  = useState("");
   const [error,     setError]     = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  // Google Sign-In
+    useEffect(() => {
+      const clientId = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID;
+      if (!clientId) return;
+  
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.onload = () => {
+        window.google?.accounts.id.initialize({
+          client_id: clientId,
+          callback: async (resp) => {
+            try {
+              await loginGoogle(resp.credential);
+              router.replace("/dashboard");
+            } catch (e) {
+              setError(e instanceof ApiError ? e.message : "Google login failed");
+            }
+          },
+        });
+        const btn = document.getElementById("google-btn");
+        if (btn) {
+          window.google?.accounts.id.renderButton(btn, {
+            theme: "filled_black", size: "large", width: 320,
+          });
+        }
+      };
+      document.body.appendChild(script);
+      return () => { document.body.removeChild(script); };
+    }, [router, loginGoogle]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,6 +143,17 @@ export default function RegisterPage() {
               )}
             </button>
           </form>
+
+          {process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID && (
+            <>
+              <div className="flex items-center gap-3 my-6">
+                <div className="flex-1 h-px bg-line" />
+                <span className="font-mono text-[10px] uppercase tracking-wider text-ink-faint">or</span>
+                <div className="flex-1 h-px bg-line" />
+              </div>
+              <div id="google-btn" className="flex justify-center" />
+            </>
+          )}
 
           <div className="text-center mt-6 font-mono text-xs text-ink-muted">
             Already have an account ?{" "}
